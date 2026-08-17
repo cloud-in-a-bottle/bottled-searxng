@@ -8,5 +8,15 @@
 		# sees the correct origin. The OpenHost router strips Host and
 		# puts the real value in X-Forwarded-Host.
 		header_up Host {header.X-Forwarded-Host}
+
+		# SearXNG (granian) starts listening on :8080 a few seconds after
+		# this Caddy sidecar comes up. Without a retry window, requests
+		# that arrive in that gap — notably the OpenHost router's
+		# wait-for-ready probe — get an immediate 502, logging ~8s of
+		# "dial tcp ... connection refused" errors on every deploy/restart.
+		# Hold and retry the dial so those early requests are bridged
+		# instead of failed.
+		lb_try_duration 30s
+		lb_try_interval 250ms
 	}
 }
