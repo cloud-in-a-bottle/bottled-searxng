@@ -42,3 +42,16 @@ To customize search engines or other settings, edit `config/settings.yml` in the
 - `start.sh` — configures SearXNG via env vars and settings.yml, then launches it
 - `Caddyfile` — rewrites Host header from X-Forwarded-Host for correct URL handling
 - `openhost.toml` — Cloud in a Bottle app manifest
+
+## License
+
+SearXNG is licensed under the GNU Affero General Public License v3.0 or later
+(AGPL-3.0-or-later). Because the image built from this repository includes
+SearXNG, the image as a whole is distributed under the AGPL-3.0 — see
+`LICENSE`. The corresponding source is upstream `searxng/searxng`; attribution,
+the source offer, and third-party component notices (Caddy, Apache-2.0) are in
+`NOTICE`.
+
+The packaging files original to this repository (`Dockerfile`, `Caddyfile`,
+`start.sh`, `openhost.toml`, and docs) are additionally offered under the MIT
+License (see `NOTICE`).
