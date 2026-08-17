@@ -8,5 +8,15 @@
 		# sees the correct origin. The OpenHost router strips Host and
 		# puts the real value in X-Forwarded-Host.
 		header_up Host {header.X-Forwarded-Host}
+
+		# Briefly hold and retry the dial so requests that land before
+		# SearXNG (granian) has bound :8080 during container startup are
+		# bridged instead of returning an immediate 502 (e.g. the OpenHost
+		# router's wait-for-ready probe). Bounded to 15s: granian is the
+		# container's main process, so a steady-state crash exits the
+		# container rather than lingering here, and a genuinely-down
+		# upstream still surfaces as an error after the window.
+		lb_try_duration 15s
+		lb_try_interval 250ms
 	}
 }

@@ -40,7 +40,7 @@ To customize search engines or other settings, edit `config/settings.yml` in the
 
 - `Dockerfile` — extends the official SearXNG image, adds Caddy
 - `start.sh` — configures SearXNG via env vars and settings.yml, then launches it
-- `Caddyfile` — rewrites Host header from X-Forwarded-Host for correct URL handling
+- `Caddyfile` — rewrites Host header from X-Forwarded-Host for correct URL handling, and briefly retries the upstream at startup so requests aren't 502'd before SearXNG binds its port
 - `openhost.toml` — Cloud in a Bottle app manifest
 
 ## License
