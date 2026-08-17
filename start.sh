@@ -73,6 +73,7 @@ search:
   formats:
     - html
     - json
+    - rss
 ui:
   static_use_hash: true
 EOF
