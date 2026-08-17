@@ -1,56 +1,44 @@
-SearXNG privacy-respecting metasearch engine for Cloud in a Bottle. Runs as a single Docker container:
+# bottled-searxng
 
-- SearXNG latest (aggregates results from 70+ search engines)
-- No external database required (uses file-based caching)
-- Persistent config and data in Cloud in a Bottle's app_data directory
+[SearXNG](https://github.com/searxng/searxng) is a privacy-respecting metasearch
+engine that aggregates results from many other search engines without tracking
+you. This repository packages it as a Cloud in a Bottle app.
 
-## How it works
+## What you get
 
-On first boot, the container:
-1. Creates config and data directories in the Cloud in a Bottle persistent storage
-2. Generates and persists a secret key
-3. Writes a `settings.yml` with the correct base_url derived from Cloud in a Bottle environment variables
-4. Starts SearXNG with sensible defaults (image proxy enabled, GET method for ease of use)
+- SearXNG running on `https://searxng.<zone>/`.
+- Public: anyone with the URL can search. No SSO.
+- Results gathered from many engines behind one search box.
+- Image results proxied through your instance, so the sites hosting them never see who is searching.
+- No external database. Configuration and cache live in the app's storage.
 
-## Deploying
+## Usage
 
-Deploy via the Cloud in a Bottle router dashboard — point it at this repo. The app will be available at `{app_name}.{zone_domain}` via subdomain routing (e.g. `searxng.zack.host.imbue.com`).
+Open `https://searxng.<zone>/` and search. Open Preferences to choose engines,
+categories, theme, and safe-search level. Searches use GET requests, so you can
+bookmark and share result-page links.
 
 ## Data
 
-All persistent data lives in `$OPENHOST_APP_DATA_DIR/`:
-- `config/settings.yml` — SearXNG configuration
-- `data/` — cache data (favicons, etc.)
+Persistent data lives under `$OPENHOST_APP_DATA_DIR/`:
+
+- `config/settings.yml`: SearXNG configuration
+- `data/`: cached data such as favicons
+
+To change engines or other settings, edit `config/settings.yml` in the app's
+data directory and restart the app.
 
 ## Resources
 
-Needs ~512MB RAM and 0.25 CPU cores. The container image is ~180MB.
-
-## Configuration
-
-`start.sh` auto-configures SearXNG at runtime. Key settings:
-- `base_url` derived from `OPENHOST_ZONE_DOMAIN` and `OPENHOST_APP_NAME`
-- Image proxy enabled (proxies images through the instance for privacy)
-- Limiter disabled (not needed behind Cloud in a Bottle's auth)
-- GET method (better UX for back button, link sharing, etc.)
-
-To customize search engines or other settings, edit `config/settings.yml` in the app's data directory.
-
-## Files
-
-- `Dockerfile` — extends the official SearXNG image, adds Caddy
-- `start.sh` — configures SearXNG via env vars and settings.yml, then launches it
-- `Caddyfile` — rewrites Host header from X-Forwarded-Host for correct URL handling
-- `openhost.toml` — Cloud in a Bottle app manifest
+About 512 MB RAM and 0.25 CPU cores. The container image is roughly 180 MB.
 
 ## License
 
 SearXNG is licensed under the GNU Affero General Public License v3.0 or later
 (AGPL-3.0-or-later). Because the image built from this repository includes
-SearXNG, the image as a whole is distributed under the AGPL-3.0 — see
-`LICENSE`. The corresponding source is upstream `searxng/searxng`; attribution,
-the source offer, and third-party component notices (Caddy, Apache-2.0) are in
-`NOTICE`.
+SearXNG, the image as a whole is distributed under the AGPL-3.0; see `LICENSE`.
+The corresponding source is upstream `searxng/searxng`; attribution, the source
+offer, and third-party component notices (Caddy, Apache-2.0) are in `NOTICE`.
 
 The packaging files original to this repository (`Dockerfile`, `Caddyfile`,
 `start.sh`, `openhost.toml`, and docs) are additionally offered under the MIT
