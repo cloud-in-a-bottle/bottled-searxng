@@ -3,6 +3,18 @@
 }
 
 :3000 {
+	# Refuse to be framed. SearXNG only sends the headers listed in its
+	# server.default_http_headers setting, whose upstream default covers
+	# nosniff and Referrer-Policy but not framing, so a public instance can
+	# otherwise be embedded in any page and its search box used for
+	# phishing. The ? prefix sets each header only when the response does
+	# not already carry it, so a future SearXNG version that sends its own
+	# (likely stronger) value still wins.
+	header {
+		?X-Frame-Options DENY
+		?Content-Security-Policy "frame-ancestors 'none'"
+	}
+
 	reverse_proxy localhost:8080 {
 		# Rewrite the Host header from X-Forwarded-Host so that SearXNG
 		# sees the correct origin. The OpenHost router strips Host and
