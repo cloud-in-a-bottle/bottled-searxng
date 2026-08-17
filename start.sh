@@ -53,7 +53,16 @@ fi
 SETTINGS_FILE="$SEARXNG_SETTINGS_PATH"
 if [ ! -f "$SETTINGS_FILE" ]; then
     cat > "$SETTINGS_FILE" <<EOF
-use_default_settings: true
+# The onion engines (ahmia, torch) only work through a Tor proxy, which this
+# image does not run. SearXNG still tries to load them on every start and logs
+# "can't register engine (loading engine failed)" for each, so drop them from
+# the engine list. Removing is required rather than disabling: SearXNG logs the
+# failure while loading the engine, before the disabled flag is consulted.
+use_default_settings:
+  engines:
+    remove:
+      - ahmia
+      - torch
 server:
   base_url: "${BASE_URL}"
   secret_key: "${SECRET_KEY}"
