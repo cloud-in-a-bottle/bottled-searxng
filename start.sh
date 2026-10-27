@@ -30,11 +30,14 @@ if [ -n "$OPENHOST_ZONE_DOMAIN" ]; then
     APP_SUBDOMAIN="${OPENHOST_APP_NAME:-searxng}"
     DOMAIN_NAME="${APP_SUBDOMAIN}.${OPENHOST_ZONE_DOMAIN}"
 
-    case "$OPENHOST_ZONE_DOMAIN" in
+    # A dev router's zone domain includes its port (eg harness.localhost:59285),
+    # so match on the hostname alone.
+    case "${OPENHOST_ZONE_DOMAIN%%:*}" in
         lvh.me|*.lvh.me|localhost|*.localhost)
-            # Dev environment — use http with the router's external port
+            # Dev environment — use http with the router's external port,
+            # unless the zone domain already carries it
             ROUTER_PORT=""
-            if [ -n "$OPENHOST_ROUTER_URL" ]; then
+            if [ -n "$OPENHOST_ROUTER_URL" ] && [ "$OPENHOST_ZONE_DOMAIN" = "${OPENHOST_ZONE_DOMAIN%%:*}" ]; then
                 ROUTER_PORT=$(echo "$OPENHOST_ROUTER_URL" | sed -n 's/.*:\([0-9]*\)$/\1/p')
             fi
             BASE_URL="http://${DOMAIN_NAME}${ROUTER_PORT:+:$ROUTER_PORT}/"
