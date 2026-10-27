@@ -10,10 +10,6 @@
 	# phishing. The ? prefix sets each header only when the response does
 	# not already carry it, so a future SearXNG version that sends its own
 	# (likely stronger) value still wins.
-	header {
-		?X-Frame-Options DENY
-		?Content-Security-Policy "frame-ancestors 'none'"
-	}
 
 	reverse_proxy localhost:8080 {
 		# Rewrite the Host header from X-Forwarded-Host so that SearXNG

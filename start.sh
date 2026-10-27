@@ -6,7 +6,7 @@ set -e
 # copy/symlink issues with image-managed volume paths.
 PERSIST="${OPENHOST_APP_DATA_DIR:-/data}"
 
-CONFIG_DIR="$PERSIST/config"
+CONFIG_DIR="/etc/searxng"  # TEMP
 DATA_DIR="$PERSIST/data"
 
 mkdir -p "$CONFIG_DIR" "$DATA_DIR"
@@ -71,12 +71,10 @@ server:
   secret_key: "${SECRET_KEY}"
   limiter: false
   image_proxy: true
-  method: "GET"
+  method: "POST"  # TEMP
 search:
   formats:
     - html
-    - json
-    - rss
 ui:
   static_use_hash: true
 EOF
