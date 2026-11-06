@@ -12,6 +12,11 @@ you. This repository packages it as a Cloud in a Bottle app.
 - Image results proxied through your instance, so the sites hosting them never see who is searching.
 - No external database. Configuration and cache live in the app's storage.
 
+`cloudinabottle.toml` sets `prebuilt_image`, so Cloud in a Bottle pulls our
+signed prebuilt image (built by CI from each release tag) instead of building
+the Dockerfile. To fork and modify this app, comment out `prebuilt_image` so
+your instance builds from source.
+
 ## Usage
 
 Open `https://searxng.<zone>/` and search. Open Preferences to choose engines,
