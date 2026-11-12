@@ -1,6 +1,6 @@
 # searxng publishes dated builds only; pin the exact build and its
 # multi-arch index digest.
-FROM docker.io/searxng/searxng:2026.10.27-ef7bae9dd@sha256:64936ab0847aae6494d37edf688ce792b262e8467d48ad844c0bf3f899a45249
+FROM docker.io/searxng/searxng:2026.11.5-3e95f6cd2@sha256:ffad724acd87b8dd312328d18da88ddd42e5c4b1d23231594662620053c13cae
 
 # The SearXNG image is Void Linux-based (no apk/apt). Download a static
 # Caddy binary for Host header rewriting (the OpenHost router strips Host
